@@ -4,6 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Animal implements Parcelable {
+    private String name;
+    private String description;
+    private Integer photo;
     public String getName() {
         return name;
     }
@@ -12,18 +15,23 @@ public class Animal implements Parcelable {
         this.name = name;
     }
 
-    private String name;
-    private String description;
-    private Integer photo;
+    public String getDescription() {
+        return description;
+    }
 
-    protected Animal(Parcel in) {
-        name = in.readString();
-        description = in.readString();
-        if (in.readByte() == 0) {
-            photo = null;
-        } else {
-            photo = in.readInt();
-        }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getPhoto() {
+        return photo;
+    }
+    public void setPhoto(Integer photo) {
+        this.photo = photo;
+    }
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     @Override
@@ -37,16 +45,23 @@ public class Animal implements Parcelable {
             dest.writeInt(photo);
         }
     }
+    Animal(){
 
-    @Override
-    public int describeContents() {
-        return 0;
+    }
+    protected Animal(Parcel in) {
+        name = in.readString();
+        description = in.readString();
+        if (in.readByte() == 0) {
+            photo = null;
+        } else {
+            photo = in.readInt();
+        }
     }
 
-    public static final Creator<Animal> CREATOR = new Creator<Animal>() {
+    public static final Parcelable.Creator<Animal> CREATOR = new Parcelable.Creator<Animal>() {
         @Override
-        public Animal createFromParcel(Parcel in) {
-            return new Animal(in);
+        public Animal createFromParcel(Parcel source) {
+            return new Animal(source);
         }
 
         @Override
@@ -55,19 +70,5 @@ public class Animal implements Parcelable {
         }
     };
 
-    public String getDescription() {
-        return description;
-    }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(Integer photo) {
-        this.photo = photo;
-    }
 }
